@@ -27,3 +27,14 @@ jobs:
 
       - name: Run tests
         run: python -m pytest -v
+      
+      - name: Integration smoke test
+        run: |
+          python -c "
+          from password_tool import generate, strength
+          pwd = generate(16)
+          assert len(pwd) == 16, 'Длина пароля не 16'
+          assert strength(pwd) in ('medium', 'strong'), 'Пароль слишком слабый'
+          assert strength('123') == 'weak', 'Слабый пароль не распознан'
+          print('Integration smoke test passed:', pwd, '->', strength(pwd))
+          "
