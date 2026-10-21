@@ -8,6 +8,19 @@ SYMBOLS = "!@#$%^&*()-_=+"
 
 MIN_LENGTH = 4
 
+COMMON_PASSWORDS = {
+    "123456", "password", "12345678", "qwerty", "123456789",
+    "12345", "1234", "111111", "1234567", "dragon",
+    "123123", "baseball", "abc123", "football", "monkey",
+    "letmein", "shadow", "master", "666666", "qwertyuiop",
+    "123321", "mustang", "1234567890", "michael", "654321",
+    "superman", "1qaz2wsx", "7777777", "121212", "000000",
+    "admin", "root", "welcome", "login", "passw0rd",
+}
+
+
+def is_common(password: str) -> bool:
+    return password.lower() in COMMON_PASSWORDS
 
 def generate(
     length: int = 12,
@@ -32,6 +45,9 @@ def generate(
 def strength(password: str) -> str:
     if not password:
         return "empty"
+
+    if is_common(password):
+        return "weak"
 
     score = 0
     if len(password) >= 8:

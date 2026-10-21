@@ -5,6 +5,7 @@ import pytest
 from password_tool.core import (
     generate,
     strength,
+    is_common,
     MIN_LENGTH,
     DIGITS,
     SYMBOLS,
@@ -67,3 +68,26 @@ def test_strength_medium():
 
 def test_strength_strong():
     assert strength("Abcdefgh1234!@#") == "strong"
+
+# ---------- is_common ----------
+
+def test_is_common_known_passwords():
+    assert is_common("123456") is True
+    assert is_common("password") is True
+    assert is_common("qwerty") is True
+
+
+def test_is_common_case_insensitive():
+    assert is_common("PASSWORD") is True
+    assert is_common("Qwerty") is True
+
+
+def test_is_common_unknown_password():
+    assert is_common("xK9!mP2#qL7@nR4$") is False
+    assert is_common("MyUniquePass123") is False
+
+
+def test_strength_rejects_common_passwords():
+    assert strength("123456789") == "weak"
+    assert strength("password") == "weak"
+    assert strength("qwerty") == "weak"
